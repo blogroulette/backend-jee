@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public class HelloWorldServlet extends HttpServlet
 {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
@@ -23,9 +29,11 @@ public class HelloWorldServlet extends HttpServlet
 
 		final String parameter = req.getParameter("myparam");
 
+		final String path = req.getPathInfo();
+
 		resp.getWriter().append(
 				String.format(
-						"<html><head><title>Servlet Hello World</title></head><body>Hello world! <br/>myparam value is: %s. <p>Whole param list:<br/>%s</p></body></html>",
-						parameter, sb.toString()));
+						"<html><head><title>Servlet Hello World</title></head><body>Hello world (Path: %s)! <br/>myparam value is: %s. <p>Whole param list:<br/>%s</p></body></html>",
+						path, parameter, sb.toString()));
 	}
 }
