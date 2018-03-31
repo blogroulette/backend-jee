@@ -6,12 +6,12 @@
   <display-name>Web Archive HelloWorld</display-name>
   
   <servlet>
-  	<servlet-name>HelloWorldServlet</servlet-name>
-  	<servlet-class>org.dhbw.mosbach.ai.javaee.HelloWorldServlet</servlet-class>
+  	<servlet-name>EintragServlet</servlet-name>
+  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.EintragServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>HelloWorldServlet</servlet-name>
-  	<url-pattern>/hello/*</url-pattern>
+  	<servlet-name>EintragServlet</servlet-name>
+  	<url-pattern>/eintrag/*</url-pattern>
   </servlet-mapping>
 </web-app>
