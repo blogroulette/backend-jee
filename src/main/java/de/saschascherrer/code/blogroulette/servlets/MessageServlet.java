@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import de.saschascherrer.code.blogroulette.persistence.Comment;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 
 public class MessageServlet extends HttpServlet {
@@ -14,6 +15,9 @@ public class MessageServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		new Message("Titel", "Lorem Ipsum").writeToOut(resp);
+		Message m=new Message("Lorem Ipsum", "Dolor sit amet");
+		m.addComment(new Comment("Dies ist ein Blindtext"));
+		m.addComment(new Comment("Ein weiterer Blindtext"));
+		m.writeToOut(resp);
 	}
 }

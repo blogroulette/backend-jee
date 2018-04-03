@@ -6,6 +6,7 @@ package de.saschascherrer.code.blogroulette.persistence;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringJoiner;
 
 /**
  * @author felix
@@ -37,10 +38,9 @@ public class Message implements Sendable {
 	/**
 	 * List of Comments correlating to the Message
 	 */
-	private ArrayList<Comment> comments=new ArrayList<>();
+	private ArrayList<Comment> comments = new ArrayList<>();
 
-	public Message(String title, String text)
-	{
+	public Message(String title, String text) {
 		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());
 		this.title = title;
 		this.text = text;
@@ -52,15 +52,21 @@ public class Message implements Sendable {
 
 	@Override
 	public String getJson() {
-		StringBuilder sb=new StringBuilder();
-		sb.append("{\n");
-		sb.append("\"messageid\" : \""+id+"\",\n");
-		sb.append("\"timestamp\" : \""+timestamp+"\",\n");
-		sb.append("\"title\" : \""+title+"\",\n");
-		sb.append("\"text\" : \""+text+"\",\n");
-		sb.append("\"votes\" : \""+votes+"\",\n");
-		sb.append("}");
-		return sb.toString();
+		StringJoiner sj = new StringJoiner(",", "{", "}");
+		sj.add("\"messageid\":\"" + id + "\"");
+		sj.add("\"timestamp\":\"" + timestamp + "\"");
+		sj.add("\"title\":\"" + title + "\"");
+		sj.add("\"text\":\"" + text + "\"");
+		sj.add("\"votes\":\"" + votes + "\"");
+		StringJoiner cj = new StringJoiner(",", "[", "]");
+		for (Comment c : comments)
+			cj.add(c.getJson());
+		sj.add("\"comments\":" + cj.toString());
+		return sj.toString();
+	}
+
+	public void addComment(Comment c) {
+		comments.add(c);
 	}
 
 	public String getTimestamp() {
