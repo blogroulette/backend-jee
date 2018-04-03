@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,12 +20,13 @@ import de.saschascherrer.code.blogroulette.persistence.Message;
 
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@PersistenceContext
 	protected EntityManager em;
 	
-	public MessageServlet() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("blogroulette");
-		em = emf.createEntityManager();
-	}
+//	public MessageServlet() {
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("blogroulette");
+//		em = emf.createEntityManager();
+//	}
 
 	
 	public List<Message> findAllMessages() {
