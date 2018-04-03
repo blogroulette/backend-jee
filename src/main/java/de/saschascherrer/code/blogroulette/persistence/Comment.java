@@ -5,14 +5,15 @@ package de.saschascherrer.code.blogroulette.persistence;
  * @author felix
  *
  */
-public class Comment {
+public class Comment implements Sendable{
 	private long id;
 
 	public long getId() {
 		return id;
 	}
-
-	public void setId(long id) {
-		this.id = id;
+	
+	@Override
+	public String getJson() {
+		return "";
 	}
 }
