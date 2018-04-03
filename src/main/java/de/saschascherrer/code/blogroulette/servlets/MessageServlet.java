@@ -1,23 +1,47 @@
 package de.saschascherrer.code.blogroulette.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.saschascherrer.code.blogroulette.persistence.Comment;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	protected EntityManager em;
+	
+	public MessageServlet() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("blogroulette");
+		em = emf.createEntityManager();
+	}
 
+	
+	public List<Message> findAllMessages() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Message> q = cb.createQuery(Message.class);
+		Root<Message> root = q.from(Message.class);
+		q.select(root);
+		q.orderBy(cb.desc(root.get("id")));
+		TypedQuery<Message> query = em.createQuery(q);
+		List<Message> results = query.getResultList();
+		return results;
+	}
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Message m=new Message("Lorem Ipsum", "Dolor sit amet");
-		m.addComment(new Comment("Dies ist ein Blindtext"));
-		m.addComment(new Comment("Ein weiterer Blindtext"));
+		List<Message> ms=findAllMessages();
+		Message m=ms.get((int)(Math.random()*ms.size()));
 		m.writeToOut(resp);
 	}
 }

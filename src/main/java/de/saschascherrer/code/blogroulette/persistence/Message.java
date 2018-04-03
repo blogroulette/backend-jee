@@ -8,36 +8,52 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringJoiner;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import de.saschascherrer.code.blogroulette.util.Sendable;
+
 /**
  * @author felix
  *
  */
+@Entity
+@Table(name = "Message")
 public class Message implements Sendable {
+	@Id
+	@Column(name = "id")
 	private long id;
 
 	/**
 	 * RFC3339 Timestamp
 	 */
+	@Column(name = "timestamp")
 	private String timestamp;
 
 	/**
 	 * Messages title
 	 */
+	@Column(name = "title")
 	private String title;
 
 	/**
 	 * Messages text
 	 */
+	@Column(name = "text")
 	private String text;
 
 	/**
 	 * Messages votes
 	 */
+	@Column(name = "votes")
 	private int votes = 0;
 
 	/**
 	 * List of Comments correlating to the Message
 	 */
+	@Column(name = "comments")
 	private ArrayList<Comment> comments = new ArrayList<>();
 
 	public Message(String title, String text) {
