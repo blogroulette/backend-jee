@@ -6,12 +6,12 @@
   <display-name>Web Archive HelloWorld</display-name>
   
   <servlet>
-  	<servlet-name>EintragServlet</servlet-name>
-  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.EintragServlet</servlet-class>
+  	<servlet-name>RandomMessageServlet</servlet-name>
+  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.RandomMessageServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>EintragServlet</servlet-name>
-  	<url-pattern>/eintrag/*</url-pattern>
+  	<servlet-name>RandomMessageServlet</servlet-name>
+  	<url-pattern>/GetRandomMessage</url-pattern>
   </servlet-mapping>
 </web-app>
