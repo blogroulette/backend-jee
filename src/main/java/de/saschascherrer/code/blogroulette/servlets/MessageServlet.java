@@ -1,14 +1,13 @@
 package de.saschascherrer.code.blogroulette.servlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,26 +19,33 @@ import de.saschascherrer.code.blogroulette.util.Status;
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@PersistenceContext
-	protected EntityManager em;
-	
-	public List<Message> findAllMessages() {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Message> q = cb.createQuery(Message.class);
-		Root<Message> root = q.from(Message.class);
-		q.select(root);
-		q.orderBy(cb.desc(root.get("id")));
-		TypedQuery<Message> query = em.createQuery(q);
-		List<Message> results = query.getResultList();
-		return results;
+	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
+
+	public Message[] messageList() {
+		// TODO Auto-generated method stub
+		Query query = em.createQuery("Select m " + "from Message m " + "ORDER BY m.id ASC");
+		List<?> list = query.getResultList();
+
+		return (Message[]) list.toArray(new Message[list.size()]);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-		List<Message> ms=findAllMessages();
-		Message m=ms.get((int)(Math.random()*ms.size()));
-		m.writeToOut(resp);
-		}catch(Exception e) {
+			BufferedReader reader = new BufferedReader(req.getReader());
+			String temp = null;
+			String s="";
+			while ((temp = reader.readLine()) != null)
+				s=temp;
+
+			Message[] ms = messageList();
+			Message m;
+			if (s.contains("messageid"))
+				m = ms[0];
+			else
+				m = ms[(int) (Math.random() * ms.length)];
+			m.writeToOut(resp);
+		} catch (Exception e) {
 			e.printStackTrace();
 			new Status("error", "Meldungen konnten nicht geladen werden").writeToOut(resp);
 		}

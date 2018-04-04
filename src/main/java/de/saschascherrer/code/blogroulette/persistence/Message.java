@@ -10,6 +10,8 @@ import java.util.StringJoiner;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,41 +22,43 @@ import de.saschascherrer.code.blogroulette.util.Sendable;
  *
  */
 @Entity
-@Table(name = "Message")
+@Table(name = "MESSAGE")
 public class Message implements Sendable {
 	@Id
-	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	/**
 	 * RFC3339 Timestamp
 	 */
-	@Column(name = "timestamp")
+	@Column(length = 128)
 	private String timestamp;
 
 	/**
 	 * Messages title
 	 */
-	@Column(name = "title")
+	@Column(nullable = false, length = 140)
 	private String title;
 
 	/**
 	 * Messages text
 	 */
-	@Column(name = "text")
+	@Column(nullable = false)
 	private String text;
 
 	/**
 	 * Messages votes
 	 */
-	@Column(name = "votes")
+	@Column(length = 128)
 	private int votes = 0;
 
 	/**
 	 * List of Comments correlating to the Message
 	 */
-	@Column(name = "comments")
+	@Column
 	private ArrayList<Comment> comments = new ArrayList<>();
+	
+	public Message() {}
 
 	public Message(String title, String text) {
 		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());

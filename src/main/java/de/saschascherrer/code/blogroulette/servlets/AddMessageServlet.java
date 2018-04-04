@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,8 @@ import de.saschascherrer.code.blogroulette.util.Status;
 public class AddMessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@PersistenceContext
-	protected EntityManager em;
+	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
+
 
 	@Resource
 	private UserTransaction userTransaction;
@@ -47,6 +49,7 @@ public class AddMessageServlet extends HttpServlet {
 				Message m = new Message(title, text);
 				userTransaction.begin();
 				em.persist(m);
+				em.flush();
 				userTransaction.commit();
 				new Status("ok").writeToOut(response);
 			}
@@ -56,7 +59,13 @@ public class AddMessageServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
+			try {
+				userTransaction.rollback();
+				new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				new Status("error", "Die Datenbank macht massive Probleme").writeToOut(response);
+			}
 		}
 	}
 
