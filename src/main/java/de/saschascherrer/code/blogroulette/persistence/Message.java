@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import de.saschascherrer.code.blogroulette.util.Sendable;
@@ -55,10 +56,11 @@ public class Message implements Sendable {
 	/**
 	 * List of Comments correlating to the Message
 	 */
-	@Column
-	private ArrayList<Comment> comments = new ArrayList<>();
-	
-	public Message() {}
+	@Lob
+	private Comment[] comments = new Comment[1];
+
+	public Message() {
+	}
 
 	public Message(String title, String text) {
 		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());
@@ -80,13 +82,21 @@ public class Message implements Sendable {
 		sj.add("\"votes\":\"" + votes + "\"");
 		StringJoiner cj = new StringJoiner(",", "[", "]");
 		for (Comment c : comments)
-			cj.add(c.getJson());
+			if (c != null)
+				cj.add(c.getJson());
 		sj.add("\"comments\":" + cj.toString());
 		return sj.toString();
 	}
 
 	public void addComment(Comment c) {
-		comments.add(c);
+		ArrayList<Comment> temp = new ArrayList<>();
+		for (Comment co : comments) {
+			if (co != null)
+				temp.add(co);
+		}
+		temp.add(c);
+		c.setId(temp.size());
+		comments = temp.toArray(new Comment[temp.size()]);
 	}
 
 	public String getTimestamp() {
