@@ -43,7 +43,6 @@ public class AddMessageServlet extends HttpServlet {
 			JsonMessage json = Input.umarshal(request, JsonMessage.class);
 			String title = json.getTitle();
 			String text = json.getText();
-			System.out.println("Titel: "+title+" Text: "+text);
 			if (!title.isEmpty() && !text.isEmpty()) {
 				Message m = new Message(title, text);
 				userTransaction.begin();
