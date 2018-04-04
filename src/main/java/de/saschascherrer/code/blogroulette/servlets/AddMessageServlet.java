@@ -1,8 +1,6 @@
 package de.saschascherrer.code.blogroulette.servlets;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.faces.bean.RequestScoped;
@@ -16,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
-import com.google.gson.Gson;
-
+import de.saschascherrer.code.blogroulette.inputs.Input;
+import de.saschascherrer.code.blogroulette.inputs.JsonMessage;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 import de.saschascherrer.code.blogroulette.util.Status;
 
@@ -34,12 +32,6 @@ public class AddMessageServlet extends HttpServlet {
 	@Resource
 	private UserTransaction userTransaction;
 
-	// public AddMessageServlet() {
-	// EntityManagerFactory emf =
-	// Persistence.createEntityManagerFactory("blogroulette");
-	// em = emf.createEntityManager();
-	// }
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -47,16 +39,11 @@ public class AddMessageServlet extends HttpServlet {
 	@Transactional
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		Gson gson = new Gson();
 		try {
-			BufferedReader reader = request.getReader();
-			ArrayList<String> list = gson.fromJson(reader, ArrayList.class);
-			String title = "";
-			String text = "";
-			for(String s:list) {
-				System.out.println(s);
-			}
+			JsonMessage json = Input.umarshal(request, JsonMessage.class);
+			String title = json.getTitle();
+			String text = json.getText();
+			System.out.println("Titel: "+title+" Text: "+text);
 			if (!title.isEmpty() && !text.isEmpty()) {
 				Message m = new Message(title, text);
 				userTransaction.begin();
