@@ -2,18 +2,15 @@ package de.saschascherrer.code.blogroulette.servlets;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 
 import de.saschascherrer.code.blogroulette.inputs.Input;
 import de.saschascherrer.code.blogroulette.inputs.JsonMessage;
@@ -27,12 +24,7 @@ import de.saschascherrer.code.blogroulette.util.Status;
 @RequestScoped
 public class AddMessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	@PersistenceContext
 	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
-
-
-	@Resource
-	private UserTransaction userTransaction;
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -47,10 +39,10 @@ public class AddMessageServlet extends HttpServlet {
 			String text = json.getText();
 			if (!title.isEmpty() && !text.isEmpty()) {
 				Message m = new Message(title, text);
-				userTransaction.begin();
+				em.getTransaction().begin();
 				em.persist(m);
-				em.flush();
-				userTransaction.commit();
+				em.getTransaction().commit();
+
 				new Status("ok").writeToOut(response);
 			}
 			else {
@@ -60,7 +52,7 @@ public class AddMessageServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				userTransaction.rollback();
+				em.getTransaction().rollback();
 				new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
 			} catch (Exception e1) {
 				e1.printStackTrace();

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,6 @@ import de.saschascherrer.code.blogroulette.util.Status;
 
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	@PersistenceContext
 	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
 
 	public Message[] messageList() {
@@ -34,9 +32,9 @@ public class MessageServlet extends HttpServlet {
 		try {
 			BufferedReader reader = new BufferedReader(req.getReader());
 			String temp = null;
-			String s="";
+			String s = "";
 			while ((temp = reader.readLine()) != null)
-				s=temp;
+				s = temp;
 
 			Message[] ms = messageList();
 			Message m;

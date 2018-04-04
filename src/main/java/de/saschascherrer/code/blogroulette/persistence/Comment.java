@@ -17,7 +17,7 @@ import de.saschascherrer.code.blogroulette.util.Sendable;
  *
  */
 @Entity
-@Table(name = "Comment")
+@Table(name = "COMMENT")
 public class Comment implements Sendable {
 	@Id
 	@Column(name = "id")
