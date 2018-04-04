@@ -9,16 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.saschascherrer.code.blogroulette.inputs.Input;
-import de.saschascherrer.code.blogroulette.inputs.JsonComment;
-import de.saschascherrer.code.blogroulette.persistence.Comment;
+import de.saschascherrer.code.blogroulette.inputs.JsonVoteMessage;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 import de.saschascherrer.code.blogroulette.util.EMM;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 /**
- * Servlet implementation class AddCommentServlet
+ * Servlet implementation class VoteMessageServlet
  */
-public class AddCommentServlet extends HttpServlet {
+public class VoteMessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -28,10 +27,13 @@ public class AddCommentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			JsonComment json = (JsonComment) Input.umarshal(request, JsonComment.class);
-			Message m = EMM.getEm().find(Message.class,Long.parseLong(json.getMessageid()));
-			m.addComment(new Comment(json.getText()));
-			EntityManager em=EMM.getEm();
+			JsonVoteMessage json = (JsonVoteMessage) Input.umarshal(request, JsonVoteMessage.class);
+			Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
+			if (json.up())
+				m.voteUp();
+			else
+				m.voteDown();
+			EntityManager em = EMM.getEm();
 			em.getTransaction().begin();
 			em.merge(m);
 			em.getTransaction().commit();
