@@ -3,7 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Web Archive HelloWorld</display-name>
+  <display-name>Blogroulette</display-name>
   
   <servlet>
   	<servlet-name>MessageServlet</servlet-name>
@@ -13,6 +13,10 @@
   	<servlet-name>AddMessageServlet</servlet-name>
   	<servlet-class>de.saschascherrer.code.blogroulette.servlets.AddMessageServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>AddCommentServlet</servlet-name>
+  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.AddCommentServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>MessageServlet</servlet-name>
@@ -21,5 +25,9 @@
   <servlet-mapping>
   	<servlet-name>AddMessageServlet</servlet-name>
   	<url-pattern>/AddMessage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AddCommentServlet</servlet-name>
+  	<url-pattern>/AddComment</url-pattern>
   </servlet-mapping>
 </web-app>

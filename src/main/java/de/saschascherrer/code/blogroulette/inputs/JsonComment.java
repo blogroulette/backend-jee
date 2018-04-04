@@ -1,10 +1,10 @@
 package de.saschascherrer.code.blogroulette.inputs;
 
-public class JsonMessage {
-	private String title;
+public class JsonComment {
+	private String messageid;
 	private String text;
-	public String getTitle() {
-		return title;
+	public String getMessageid() {
+		return messageid;
 	}
 	public String getText() {
 		return text;

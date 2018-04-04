@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import de.saschascherrer.code.blogroulette.inputs.Input;
 import de.saschascherrer.code.blogroulette.inputs.JsonMessage;
 import de.saschascherrer.code.blogroulette.persistence.Message;
+import de.saschascherrer.code.blogroulette.util.EMM;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 /**
@@ -24,7 +25,6 @@ import de.saschascherrer.code.blogroulette.util.Status;
 @RequestScoped
 public class AddMessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -33,19 +33,20 @@ public class AddMessageServlet extends HttpServlet {
 	@Transactional
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		EntityManager em = EMM.getEm();
 		try {
-			JsonMessage json = Input.umarshal(request, JsonMessage.class);
+			JsonMessage json = (JsonMessage) Input.umarshal(request, JsonMessage.class);
 			String title = json.getTitle();
 			String text = json.getText();
 			if (!title.isEmpty() && !text.isEmpty()) {
 				Message m = new Message(title, text);
+
 				em.getTransaction().begin();
 				em.persist(m);
 				em.getTransaction().commit();
 
 				new Status("ok").writeToOut(response);
-			}
-			else {
+			} else {
 				new Status("error", "Konnte Text und Titel nicht finden").writeToOut(response);
 			}
 

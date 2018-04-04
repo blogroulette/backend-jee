@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.saschascherrer.code.blogroulette.persistence.Message;
+import de.saschascherrer.code.blogroulette.util.EMM;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected EntityManager em = Persistence.createEntityManagerFactory("blogroulette").createEntityManager();
 
 	public Message[] messageList() {
-		// TODO Auto-generated method stub
-		Query query = em.createQuery("Select m " + "from Message m " + "ORDER BY m.id ASC");
+		Query query = EMM.getEm().createQuery("Select m " + "from Message m " + "ORDER BY m.id ASC");
 		List<?> list = query.getResultList();
 
 		return (Message[]) list.toArray(new Message[list.size()]);
