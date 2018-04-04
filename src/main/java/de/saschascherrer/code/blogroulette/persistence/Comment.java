@@ -41,11 +41,15 @@ public class Comment implements Sendable, Serializable {
 	public void setId(int id) {
 		this.id=id;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	@Override
 	public String getJson() {
 		StringJoiner sj = new StringJoiner(",", "{", "}");
-		sj.add("\"messageid\":\"" + id + "\"");
+		sj.add("\"commentid\":\"" + id + "\"");
 		sj.add("\"timestamp\":\"" + timestamp + "\"");
 		sj.add("\"text\":\"" + text + "\"");
 		sj.add("\"votes\":\"" + votes + "\"");

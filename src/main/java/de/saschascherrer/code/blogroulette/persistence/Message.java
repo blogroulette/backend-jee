@@ -122,4 +122,13 @@ public class Message implements Sendable {
 	public void voteDown() {
 		votes--;
 	}
+
+	public Comment getComment(int index) {
+		for (Comment c : comments) {
+			if (c.getId() == index) {
+				return c;
+			}
+		}
+		return null;
+	}
 }

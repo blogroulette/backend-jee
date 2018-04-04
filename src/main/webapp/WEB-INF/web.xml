@@ -21,6 +21,10 @@
   	<servlet-name>VoteMessageServlet</servlet-name>
   	<servlet-class>de.saschascherrer.code.blogroulette.servlets.VoteMessageServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>VoteCommentServlet</servlet-name>
+  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.VoteCommentServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>MessageServlet</servlet-name>
@@ -37,5 +41,9 @@
   <servlet-mapping>
   	<servlet-name>VoteMessageServlet</servlet-name>
   	<url-pattern>/VoteMessage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>VoteCommentServlet</servlet-name>
+  	<url-pattern>/VoteComment</url-pattern>
   </servlet-mapping>
 </web-app>
