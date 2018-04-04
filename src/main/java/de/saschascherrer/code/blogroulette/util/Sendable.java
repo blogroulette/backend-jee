@@ -1,4 +1,4 @@
-package de.saschascherrer.code.blogroulette.persistence;
+package de.saschascherrer.code.blogroulette.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -8,37 +8,57 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringJoiner;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import de.saschascherrer.code.blogroulette.util.Sendable;
+
 /**
  * @author felix
  *
  */
+@Entity
+@Table(name = "MESSAGE")
 public class Message implements Sendable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	/**
 	 * RFC3339 Timestamp
 	 */
+	@Column(length = 128)
 	private String timestamp;
 
 	/**
 	 * Messages title
 	 */
+	@Column(nullable = false, length = 140)
 	private String title;
 
 	/**
 	 * Messages text
 	 */
+	@Column(nullable = false)
 	private String text;
 
 	/**
 	 * Messages votes
 	 */
+	@Column(length = 128)
 	private int votes = 0;
 
 	/**
 	 * List of Comments correlating to the Message
 	 */
+	@Column
 	private ArrayList<Comment> comments = new ArrayList<>();
+	
+	public Message() {}
 
 	public Message(String title, String text) {
 		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());
