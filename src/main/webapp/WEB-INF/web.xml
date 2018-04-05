@@ -25,6 +25,10 @@
   	<servlet-name>VoteCommentServlet</servlet-name>
   	<servlet-class>de.saschascherrer.code.blogroulette.servlets.VoteCommentServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>RegisterServlet</servlet-name>
+  	<servlet-class>de.saschascherrer.code.blogroulette.servlets.RegisterServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>MessageServlet</servlet-name>
@@ -45,5 +49,9 @@
   <servlet-mapping>
   	<servlet-name>VoteCommentServlet</servlet-name>
   	<url-pattern>/VoteComment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>RegisterServlet</servlet-name>
+  	<url-pattern>/Register</url-pattern>
   </servlet-mapping>
 </web-app>
