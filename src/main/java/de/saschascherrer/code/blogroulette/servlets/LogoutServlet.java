@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private User user(String name) {
-		Query query = EMM.getEm().createQuery("select u from User u where u.name like :name");
+		Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
 		query.setParameter("name", name);
 		List<?> list = query.getResultList();
 		if (list.size() < 1)
@@ -38,6 +38,10 @@ public class LogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			JsonRegister json = (JsonRegister) Input.umarshal(request, JsonRegister.class);
+			if (json.getUser() == null) {
+				new Status("error", "Kein User angegeben").writeToOut(response);
+				return;
+			}
 			User u = user(json.getUser());
 			if (u == null) {
 				new Status("error", "Der User existiert nicht").writeToOut(response);
@@ -47,7 +51,7 @@ public class LogoutServlet extends HttpServlet {
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Status("error", "Das Einloggen ist fehlgeschlagen").writeToOut(response);
+			new Status("error", "Das Ausloggen ist fehlgeschlagen").writeToOut(response);
 		}
 	}
 

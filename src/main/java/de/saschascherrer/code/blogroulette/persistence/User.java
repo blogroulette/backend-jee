@@ -1,5 +1,7 @@
 package de.saschascherrer.code.blogroulette.persistence;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import de.saschascherrer.code.blogroulette.util.Security;
 import de.saschascherrer.code.blogroulette.util.Sendable;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.TextCodec;
 
 /**
  * 
@@ -42,8 +45,8 @@ public class User implements Sendable {
 	}
 
 	private String generateJWTToken(String user) {
-		String token = Jwts.builder().setSubject(user).claim("iat", System.currentTimeMillis())
-				.signWith(SignatureAlgorithm.HS512, System.getProperty("JWT-KEY")).compact();
+		String token = Jwts.builder().setSubject(user).setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS256,
+				TextCodec.BASE64.decode("xUYbP3AoJ+JwyaKOjjKh67D3UaNkPst6EliortY3DxU=")).compact();
 		return token;
 	}
 
