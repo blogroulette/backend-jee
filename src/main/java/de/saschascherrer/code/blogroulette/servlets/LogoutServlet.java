@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private User user(String name) {
-		Query query = EMM.getEm().createQuery("select u from User o where o.name like :name");
+		Query query = EMM.getEm().createQuery("select u from User u where u.name like :name");
 		query.setParameter("name", name);
 		List<?> list = query.getResultList();
 		if (list.size() < 1)
