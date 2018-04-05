@@ -9,8 +9,12 @@ public class JsonVoteComment {
 		return messageid;
 	}
 
-	public boolean up() {
-		return !vote.equals("down");
+	public int upOrDown() {
+		if (vote.equals("down"))
+			return -1;
+		if (vote.equals("up"))
+			return 1;
+		return 0;
 	}
 
 	public int getCommentid() {

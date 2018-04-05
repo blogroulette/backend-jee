@@ -29,10 +29,7 @@ public class VoteMessageServlet extends HttpServlet {
 		try {
 			JsonVoteMessage json = (JsonVoteMessage) Input.umarshal(request, JsonVoteMessage.class);
 			Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
-			if (json.up())
-				m.voteUp();
-			else
-				m.voteDown();
+			m.addVote(json.upOrDown());
 			EntityManager em = EMM.getEm();
 			em.getTransaction().begin();
 			em.merge(m);
@@ -40,7 +37,7 @@ public class VoteMessageServlet extends HttpServlet {
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			new Status("error", "Das Speichern des Kommentars ist fehlgeschlagen").writeToOut(response);
+			new Status("error", "Das Speichern der Nachricht ist fehlgeschlagen").writeToOut(response);
 		}
 	}
 

@@ -35,10 +35,7 @@ public class VoteCommentServlet extends HttpServlet {
 				new Status("error", "Ungültige ID").writeToOut(response);
 				return;
 			}
-			if (json.up())
-				c.voteUp();
-			else
-				c.voteDown();
+			c.addVote(json.upOrDown());
 			EntityManager em = EMM.getEm();
 			em.getTransaction().begin();
 			em.merge(m);
