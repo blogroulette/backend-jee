@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,6 +24,7 @@ import io.jsonwebtoken.impl.TextCodec;
 @Table(name = "USER")
 public class User implements Sendable {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(nullable = false)
@@ -35,6 +38,11 @@ public class User implements Sendable {
 
 	@Column
 	private String token;
+	
+	/**
+	 * Default Constructor
+	 */
+	public User() {}
 
 	public User(String username, String password, String salt) {
 		super();
@@ -54,9 +62,9 @@ public class User implements Sendable {
 		return id;
 	}
 
-	public boolean login(String password) {
-		String hash = Security.getHash(password, salt);
-		boolean b = this.password.equals(hash);
+	public boolean login(String p) {
+		String hash = Security.getHash(p, salt);
+		boolean b = password.equals(hash);
 		if (b) {
 			this.token = generateJWTToken(username);
 		}

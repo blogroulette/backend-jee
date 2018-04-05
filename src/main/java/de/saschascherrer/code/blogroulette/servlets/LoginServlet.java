@@ -47,8 +47,8 @@ public class LoginServlet extends HttpServlet {
 				new Status("error", "Der User existiert nicht").writeToOut(response);
 				return;
 			}
-			if (!u.login(json.getPassword())) {
-				new Status("error", "Anmeldeinformationen stimmen nicht überein").writeToOut(response);
+			if (!u.login(json.getUnsaltedPassword())) {
+				new Status("error", "Anmeldeinformationen stimmen nicht").writeToOut(response);
 				return;
 			}
 			u.writeToOut(response);

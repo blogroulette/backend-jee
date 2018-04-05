@@ -16,6 +16,10 @@ public class JsonRegister {
 	public String getPassword() {
 		return Security.getHash(password, salt);
 	}
+	
+	public String getUnsaltedPassword() {
+		return password;
+	}
 
 	public String getSalt() {
 		return salt;
