@@ -54,7 +54,7 @@ public class User implements Sendable {
 
 	private String generateJWTToken(String user) {
 		String token = Jwts.builder().setSubject(user).setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS256,
-				TextCodec.BASE64.decode("xUYbP3AoJ+JwyaKOjjKh67D3UaNkPst6EliortY3DxU=")).compact();
+				TextCodec.BASE64.decode(Security.PRIVATE_KEY)).compact();
 		return token;
 	}
 

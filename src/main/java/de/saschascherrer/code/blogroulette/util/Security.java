@@ -3,8 +3,20 @@ package de.saschascherrer.code.blogroulette.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+
+import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.HttpHeaders;
+
+import de.saschascherrer.code.blogroulette.persistence.User;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 
 public class Security {
+
+	public static String PRIVATE_KEY = "xUYbP3AoJ+JwyaKOjjKh67D3UaNkPst6EliortY3DxU=";
+
 	public static String getHash(String passwordToHash, String salt) {
 		String generatedPassword = null;
 		try {
@@ -20,5 +32,26 @@ public class Security {
 			e.printStackTrace();
 		}
 		return generatedPassword;
+	}
+
+	public static User validToken(HttpServletRequest request) {
+		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+		System.out.println("Header: "+HttpHeaders.AUTHORIZATION);
+		if (token == null)
+			return null;
+		try {
+		JwtParser signed = Jwts.parser().setSigningKey(PRIVATE_KEY);
+		String name = signed.parseClaimsJws(token).getBody().getSubject();
+		Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
+		query.setParameter("name", name);
+		List<?> list = query.getResultList();
+		if (list.size() < 1)
+			return null;
+		return (User) list.get(0);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -3,6 +3,7 @@ package de.saschascherrer.code.blogroulette.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import de.saschascherrer.code.blogroulette.inputs.Input;
 import de.saschascherrer.code.blogroulette.inputs.JsonRegister;
 import de.saschascherrer.code.blogroulette.persistence.User;
 import de.saschascherrer.code.blogroulette.util.EMM;
+import de.saschascherrer.code.blogroulette.util.Security;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 /**
@@ -21,15 +23,6 @@ import de.saschascherrer.code.blogroulette.util.Status;
 public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private User user(String name) {
-		Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
-		query.setParameter("name", name);
-		List<?> list = query.getResultList();
-		if (list.size() < 1)
-			return null;
-		return (User) list.get(0);
-	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -37,17 +30,17 @@ public class LogoutServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			JsonRegister json = (JsonRegister) Input.umarshal(request, JsonRegister.class);
-			if (json.getUser() == null) {
-				new Status("error", "Kein User angegeben").writeToOut(response);
-				return;
-			}
-			User u = user(json.getUser());
+			User u = Security.validToken(request);
 			if (u == null) {
-				new Status("error", "Der User existiert nicht").writeToOut(response);
+				new Status("error", "Nicht eingeloggt").writeToOut(response);
 				return;
 			}
 			u.logout();
+
+			EntityManager em = EMM.getEm();
+			em.getTransaction().begin();
+			em.merge(u);
+			em.getTransaction().commit();
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();
