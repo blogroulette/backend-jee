@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+    <title><ui:insert name="title">#{msgs['default.title']}</ui:insert></title>
+</h:head>
+
+<h:body>
+
+    <div id="menu"><ui:include src="/templates/navigation.xhtml"/></div>
+
+    <b:container fluid="true">
+        <p:growl autoUpdate="true"/>
+
+        <p:spacer height="0.5em;"/>
+        <h1><ui:insert name="header">#{msgs['default.header']}</ui:insert></h1>
+        <div id="content"><ui:insert name="content">#{msg['default.content']}</ui:insert></div>
+
+        <div id="footer"><ui:insert name="footer">#{msgs['default.footer']}</ui:insert></div>
+
+        <b:navBar fixed="bottom" sticky="true">
+            <b:navbarLinks>
+                <b:navLink value="#{msgs['nav.bottom.copyright']}"
+                           href="http://www.mosbach.dhbw.de/no_cache/unsere-hochschule/kontakt/detailansicht/person/alexanderauch/"
+                           target="_blank"/>
+            </b:navbarLinks>
+        </b:navBar>
+
+    </b:container>
+
+    <ui:remove>
+        <ui:debug hotkey="x"/>
+    </ui:remove>
+</h:body>
+
+</html>

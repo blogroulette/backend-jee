@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition>
+
+    <h:form>
+        <b:navBar brand="#{msg['nav.bar.brand']}" brand-href="#" fixed="top"
+                  inverse="true">
+
+            <b:navbarLinks>
+                <b:navCommandLink value="Home" action="/pages/index.xhtml" immediate="true"/>
+
+                <b:dropMenu value="Test">
+                    <b:navCommandLink value="Params" action="/pages/params.xhtml?faces-redirect=true"/>
+                    <b:navCommandLink value="Scopes" action="/pages/scopes.xhtml?faces-redirect=true"/>
+                </b:dropMenu>
+            </b:navbarLinks>
+        </b:navBar>
+    </h:form>
+
+</ui:composition>
+
+</html>
