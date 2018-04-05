@@ -64,12 +64,8 @@ public class Comment implements Sendable, Serializable {
 		return text;
 	}
 
-	public int getVotes() {
-		return votes;
-	}
-
-	public void voteUp() {
-		votes++;
+	public void addVote(int i) {
+		votes += i;
 	}
 
 	public void voteDown() {

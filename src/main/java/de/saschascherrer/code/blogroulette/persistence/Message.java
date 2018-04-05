@@ -115,12 +115,8 @@ public class Message implements Sendable {
 		return votes;
 	}
 
-	public void voteUp() {
-		votes++;
-	}
-
-	public void voteDown() {
-		votes--;
+	public void addVote(int i) {
+		votes += i;
 	}
 
 	public Comment getComment(int index) {
