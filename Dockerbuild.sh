@@ -3,5 +3,6 @@
 set -x
 
 mvn install -q
-docker build -t saschascherrer/blogroulette-backend .
+docker build -t blogroulette/blogroulette-backend .
+
 
