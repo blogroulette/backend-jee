@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.HttpHeaders;
 
 import de.saschascherrer.code.blogroulette.persistence.User;
 import de.saschascherrer.code.blogroulette.util.EMM;
@@ -31,7 +32,7 @@ public class LogoutServlet extends HttpServlet {
 				new Status("error", "Nicht eingeloggt").writeToOut(response);
 				return;
 			}
-			u.logout();
+			u.logout(request.getHeader(HttpHeaders.AUTHORIZATION));
 
 			EntityManager em = EMM.getEm();
 			em.getTransaction().begin();

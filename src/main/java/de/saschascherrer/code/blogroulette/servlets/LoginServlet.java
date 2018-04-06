@@ -3,6 +3,7 @@ package de.saschascherrer.code.blogroulette.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,6 +52,10 @@ public class LoginServlet extends HttpServlet {
 				new Status("error", "Anmeldeinformationen stimmen nicht").writeToOut(response);
 				return;
 			}
+			EntityManager em = EMM.getEm();
+			em.getTransaction().begin();
+			em.merge(u);
+			em.getTransaction().commit();
 			u.writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();

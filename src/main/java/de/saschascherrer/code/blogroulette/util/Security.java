@@ -36,7 +36,7 @@ public class Security {
 
 	public static User validToken(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if (token == null)
+		if (token == null || token.isEmpty())
 			return null;
 		try {
 		JwtParser signed = Jwts.parser().setSigningKey(PRIVATE_KEY);

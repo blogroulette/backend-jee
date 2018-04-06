@@ -38,23 +38,24 @@ public class User implements Sendable {
 
 	@Column
 	private String token;
-	
+
 	/**
 	 * Default Constructor
 	 */
-	public User() {}
+	public User() {
+	}
 
 	public User(String username, String password, String salt) {
 		super();
 		this.password = password;
 		this.username = username;
 		this.salt = salt;
-		this.token = generateJWTToken(username);
+		token = generateJWTToken(username) + ";";
 	}
 
 	private String generateJWTToken(String user) {
-		String token = Jwts.builder().setSubject(user).setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS256,
-				TextCodec.BASE64.decode(Security.PRIVATE_KEY)).compact();
+		String token = Jwts.builder().setSubject(user).setIssuedAt(new Date())
+				.signWith(SignatureAlgorithm.HS256, TextCodec.BASE64.decode(Security.PRIVATE_KEY)).compact();
 		return token;
 	}
 
@@ -62,11 +63,24 @@ public class User implements Sendable {
 		return id;
 	}
 
+	private void addToken(String t) {
+		token += t;
+		token += ";";
+		if (token.split(";").length > 5) {
+			String[] tokens = token.split(";");
+			String tmp = "";
+			for (int i = 1; i < tokens.length; i++) {
+				tmp += tokens[i] + ";";
+			}
+			token = tmp;
+		}
+	}
+
 	public boolean login(String p) {
 		String hash = Security.getHash(p, salt);
 		boolean b = password.equals(hash);
 		if (b) {
-			this.token = generateJWTToken(username);
+			addToken(generateJWTToken(username));
 		}
 		return b;
 	}
@@ -75,12 +89,18 @@ public class User implements Sendable {
 		return username;
 	}
 
-	public void logout() {
-		token = "";
+	public void logout(String t) {
+		token.replaceAll(t, "");
+		token.replaceAll(";;", ";");
+	}
+
+	private String getLastToken() {
+		String[] tokens = token.split(";");
+		return tokens[tokens.length - 1];
 	}
 
 	@Override
 	public String getJson() {
-		return "{\"username\": \"" + username + "\", \"token\": \"" + token + "\"}";
+		return "{\"username\": \"" + username + "\", \"token\": \"" + getLastToken() + "\"}";
 	}
 }
