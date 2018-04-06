@@ -81,6 +81,6 @@ public class User implements Sendable {
 
 	@Override
 	public String getJson() {
-		return "{\"username\": " + username + ", token: " + token + "}";
+		return "{\"username\": \"" + username + "\", \"token\": \"" + token + "\"}";
 	}
 }

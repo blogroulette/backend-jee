@@ -1,17 +1,13 @@
 package de.saschascherrer.code.blogroulette.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.saschascherrer.code.blogroulette.inputs.Input;
-import de.saschascherrer.code.blogroulette.inputs.JsonRegister;
 import de.saschascherrer.code.blogroulette.persistence.User;
 import de.saschascherrer.code.blogroulette.util.EMM;
 import de.saschascherrer.code.blogroulette.util.Security;

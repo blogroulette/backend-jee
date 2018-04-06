@@ -36,7 +36,6 @@ public class Security {
 
 	public static User validToken(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-		System.out.println("Header: "+HttpHeaders.AUTHORIZATION);
 		if (token == null)
 			return null;
 		try {
