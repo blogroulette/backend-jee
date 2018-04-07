@@ -89,6 +89,10 @@ public class User implements Sendable {
 		return username;
 	}
 
+	public boolean isTokenValid(String t) {
+		return token.contains(t);
+	}
+
 	public void logout(String t) {
 		token.replaceAll(t, "");
 		token.replaceAll(";;", ";");

@@ -39,16 +39,19 @@ public class Security {
 		if (token == null || token.isEmpty())
 			return null;
 		try {
-		JwtParser signed = Jwts.parser().setSigningKey(PRIVATE_KEY);
-		String name = signed.parseClaimsJws(token).getBody().getSubject();
-		Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
-		query.setParameter("name", name);
-		List<?> list = query.getResultList();
-		if (list.size() < 1)
+			JwtParser signed = Jwts.parser().setSigningKey(PRIVATE_KEY);
+			String name = signed.parseClaimsJws(token).getBody().getSubject();
+			Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
+			query.setParameter("name", name);
+			List<?> list = query.getResultList();
+			if (list.size() < 1)
+				return null;
+			User u = (User) list.get(0);
+			if (u.isTokenValid(token)) {
+				return u;
+			}
 			return null;
-		return (User) list.get(0);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
