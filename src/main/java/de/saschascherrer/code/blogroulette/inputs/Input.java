@@ -11,6 +11,7 @@ public class Input {
 
 	public static Object umarshal(HttpServletRequest request, Class<?> class1) throws IOException {
 		Gson gson = new Gson();
+		request.setCharacterEncoding("utf8");
 		BufferedReader reader = request.getReader();
 		return gson.fromJson(reader, class1);
 	}

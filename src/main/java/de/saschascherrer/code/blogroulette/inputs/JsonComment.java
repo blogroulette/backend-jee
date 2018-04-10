@@ -9,6 +9,8 @@ public class JsonComment {
 		return StringEscapeUtils.escapeJava(messageid);
 	}
 	public String getText() {
+		System.out.println(text);
+		System.out.println(StringEscapeUtils.escapeJava(text));
 		return StringEscapeUtils.escapeJava(text);
 	}
 }
