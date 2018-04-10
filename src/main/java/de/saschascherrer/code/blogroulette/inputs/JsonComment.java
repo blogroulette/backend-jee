@@ -1,12 +1,14 @@
 package de.saschascherrer.code.blogroulette.inputs;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 public class JsonComment {
 	private String messageid;
 	private String text;
 	public String getMessageid() {
-		return messageid;
+		return StringEscapeUtils.escapeJava(messageid);
 	}
 	public String getText() {
-		return text;
+		return StringEscapeUtils.escapeJava(text);
 	}
 }

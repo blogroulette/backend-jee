@@ -40,7 +40,6 @@ public class Security {
 			String[] tmp = token.split(" ");
 			token = tmp[tmp.length - 1];
 		}
-		System.out.println(token);
 		if (token == null || token.isEmpty())
 			return null;
 		try {

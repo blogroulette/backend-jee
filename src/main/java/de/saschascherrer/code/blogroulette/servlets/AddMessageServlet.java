@@ -57,14 +57,7 @@ public class AddMessageServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			try {
-				em.getTransaction().rollback();
-				em.close();
 				new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				new Status("error", "Die Datenbank macht massive Probleme").writeToOut(response);
-			}
 		}
 	}
 

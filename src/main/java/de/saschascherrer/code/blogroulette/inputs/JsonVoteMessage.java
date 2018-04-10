@@ -1,11 +1,13 @@
 package de.saschascherrer.code.blogroulette.inputs;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 public class JsonVoteMessage {
 	private String messageid;
 	private String vote;
 
 	public String getMessageid() {
-		return messageid;
+		return StringEscapeUtils.escapeJava(messageid);
 	}
 
 	public int upOrDown() {

@@ -2,6 +2,8 @@ package de.saschascherrer.code.blogroulette.inputs;
 
 import java.security.SecureRandom;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import de.saschascherrer.code.blogroulette.util.Security;
 
 public class JsonRegister {
@@ -10,15 +12,15 @@ public class JsonRegister {
 	String salt = "" + SecureRandom.getSeed(16);
 
 	public String getUser() {
-		return username;
+		return StringEscapeUtils.escapeJava(username);
 	}
 
 	public String getPassword() {
-		return Security.getHash(password, salt);
+		return Security.getHash(getUnsaltedPassword(), salt);
 	}
 	
 	public String getUnsaltedPassword() {
-		return password;
+		return StringEscapeUtils.escapeJava(password);
 	}
 
 	public String getSalt() {

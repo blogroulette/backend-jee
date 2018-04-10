@@ -16,8 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import de.saschascherrer.code.blogroulette.util.Sendable;
 
 /**
@@ -79,8 +77,8 @@ public class Message implements Sendable {
 		StringJoiner sj = new StringJoiner(",", "{", "}");
 		sj.add("\"messageid\":\"" + id + "\"");
 		sj.add("\"timestamp\":\"" + timestamp + "\"");
-		sj.add("\"title\":\"" + StringEscapeUtils.escapeJava(title) + "\"");
-		sj.add("\"text\":\"" + StringEscapeUtils.escapeJava(text) + "\"");
+		sj.add("\"title\":\"" + title + "\"");
+		sj.add("\"text\":\"" + text + "\"");
 		sj.add("\"votes\":\"" + votes + "\"");
 		StringJoiner cj = new StringJoiner(",", "[", "]");
 		for (Comment c : comments)

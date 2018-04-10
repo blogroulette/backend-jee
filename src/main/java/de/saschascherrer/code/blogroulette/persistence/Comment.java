@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringJoiner;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import de.saschascherrer.code.blogroulette.util.Sendable;
 
 /**
@@ -54,7 +52,7 @@ public class Comment implements Sendable, Serializable {
 		StringJoiner sj = new StringJoiner(",", "{", "}");
 		sj.add("\"commentid\":\"" + id + "\"");
 		sj.add("\"timestamp\":\"" + timestamp + "\"");
-		sj.add("\"text\":\"" + StringEscapeUtils.escapeJava(text) + "\"");
+		sj.add("\"text\":\"" +text+ "\"");
 		sj.add("\"votes\":\"" + votes + "\"");
 		return sj.toString();
 	}
