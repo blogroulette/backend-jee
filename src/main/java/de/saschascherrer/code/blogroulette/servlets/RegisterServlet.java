@@ -33,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.persist(u);
 			em.getTransaction().commit();
+			em.close();
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();

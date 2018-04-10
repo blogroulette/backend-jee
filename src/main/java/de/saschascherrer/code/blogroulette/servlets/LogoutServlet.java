@@ -26,6 +26,10 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		if(Security.validToken(request)==null) {
+			response.sendError(403, "Verboten!");
+			return;
+		}
 		try {
 			User u = Security.validToken(request);
 			if (u == null) {
@@ -38,6 +42,7 @@ public class LogoutServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.merge(u);
 			em.getTransaction().commit();
+			em.close();
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -36,7 +36,7 @@ public class User implements Sendable {
 	@Column(nullable = false)
 	private String salt;
 
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String token;
 
 	/**
@@ -94,8 +94,8 @@ public class User implements Sendable {
 	}
 
 	public void logout(String t) {
-		token.replaceAll(t, "");
-		token.replaceAll(";;", ";");
+		token = token.replaceAll(t, "");
+		token = token.replaceAll(";;", ";");
 	}
 
 	private String getLastToken() {

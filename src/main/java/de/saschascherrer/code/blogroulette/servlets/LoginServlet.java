@@ -56,6 +56,7 @@ public class LoginServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.merge(u);
 			em.getTransaction().commit();
+			em.close();
 			u.writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();

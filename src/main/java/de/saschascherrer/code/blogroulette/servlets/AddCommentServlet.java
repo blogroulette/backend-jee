@@ -40,6 +40,7 @@ public class AddCommentServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.merge(m);
 			em.getTransaction().commit();
+			em.close();
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();
