@@ -2,6 +2,7 @@ package de.saschascherrer.code.blogroulette.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,20 +10,47 @@ import javax.persistence.Persistence;
 
 public class EMM {
 
-	private static EntityManagerFactory fact;
-	private static Map<String, String> properties;
-	static {
-		properties = new HashMap<String, String>();
-		properties.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/blogroulette");
-		properties.put("javax.persistence.jdbc.driver", "org.mariadb.jdbc.Driver");
-		properties.put("javax.persistence.schema-generation.database.action", "create");
+    private static EntityManagerFactory fact;
+    private static Map<String, String> properties;
 
-		properties.put("javax.persistence.jdbc.user", "root");
-		properties.put("javax.persistence.jdbc.password", "felix");
-		fact = Persistence.createEntityManagerFactory("blogroulette", properties);
-	}
+    static {
+        Map<String, String> environment = System.getenv();
+        for (String envName : environment.keySet()) {
+            Logger.getAnonymousLogger().info("ENV: " + environment.keySet());
+            System.out.printf("'%s'='%s' \n", envName, environment.get(envName));
+        }
 
-	public static EntityManager getEm() {
-		return fact.createEntityManager();
-	}
+        properties = new HashMap<String, String>();
+
+        if (environment.keySet().contains("BLOGROULETTE_DB_URL")) {
+            properties.put("javax.persistence.jdbc.url", environment.get("BLOGROULETTE_DB_URL"));
+        } else {
+            properties.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/blogroulette");
+        }
+
+        if (environment.keySet().contains("BLOGROULETTE_DB_DRIVER")) {
+            properties.put("javax.persistence.jdbc.driver", environment.get("BLOGROULETTE_DB_DRIVER"));
+        } else {
+            properties.put("javax.persistence.jdbc.driver", "org.mariadb.jdbc.Driver");
+        }
+
+        if (environment.keySet().contains("BLOGROULETTE_DB_USER")) {
+            properties.put("javax.persistence.jdbc.user", environment.get("BLOGROULETTE_DB_USER"));
+        } else {
+            properties.put("javax.persistence.jdbc.user", "root");
+        }
+
+        if (environment.keySet().contains("BLOGROULETTE_DB_PASSWORD")) {
+            properties.put("javax.persistence.jdbc.password", environment.get("BLOGROULETTE_DB_PASSWORD"));
+        } else {
+            properties.put("javax.persistence.jdbc.password", "felix");
+        }
+
+        properties.put("javax.persistence.schema-generation.database.action", "create");
+        fact = Persistence.createEntityManagerFactory("blogroulette", properties);
+    }
+
+    public static EntityManager getEm() {
+        return fact.createEntityManager();
+    }
 }
