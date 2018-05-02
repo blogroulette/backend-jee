@@ -1,7 +1,7 @@
 # Blogroulette JavaEE Backend
 [![Build Status](https://travis-ci.org/blogroulette/backend-jee.svg?branch=master)](https://travis-ci.org/blogroulette/backend-jee)
 
-This is the backend for the blogroulette web application. 
+This is the backend for the Blogroulette web application. 
 It is written in JavaEE and provides a REST-ful API to the frontend.
 The component is developed and tested with JavaEE/openJDK1.8 and JBoss/Wildfly 
 12 as graded project in an university lecture on JavaEE and is designed to match
@@ -9,9 +9,10 @@ the [frontend written in Angular](https://github.com/blogroulette/frontend-angul
 
 
 ## Run it
-You will need a MySQL/MariaDB Database Server running and prepared for this application.
+You will need a MySQL/MariaDB Database Server running and prepared for this application. 
+We will soon add documentation on how to do this.
 
-To build this project, you need a Java JDK version 1.8 or compatible and Maver version 3 or compatible.
+To build this project, you need a Java JDK version 1.8 or compatible and Maven version 3 or compatible.
 To run it, execute ```mvn clean install``` which builds the target/blogroulette.war file to be used by 
 an web application server like Wildfly.
 
