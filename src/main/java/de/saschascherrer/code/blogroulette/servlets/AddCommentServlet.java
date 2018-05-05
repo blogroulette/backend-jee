@@ -13,6 +13,7 @@ import de.saschascherrer.code.blogroulette.inputs.JsonComment;
 import de.saschascherrer.code.blogroulette.persistence.Comment;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 import de.saschascherrer.code.blogroulette.util.EMM;
+import de.saschascherrer.code.blogroulette.util.Security;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 /**
@@ -27,6 +28,10 @@ public class AddCommentServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		if(Security.validToken(request)==null) {
+			response.sendError(403, "Verboten!");
+			return;
+		}
 		try {
 			JsonComment json = (JsonComment) Input.umarshal(request, JsonComment.class);
 			Message m = EMM.getEm().find(Message.class,Long.parseLong(json.getMessageid()));
@@ -35,6 +40,7 @@ public class AddCommentServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.merge(m);
 			em.getTransaction().commit();
+			em.close();
 			new Status("ok").writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();

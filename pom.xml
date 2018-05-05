@@ -74,6 +74,11 @@
 			<artifactId>primefaces</artifactId>
 			<version>${version.primefaces}</version>
 		</dependency>
+        <dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>blogroulette</finalName>

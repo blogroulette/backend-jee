@@ -30,18 +30,19 @@ public class Comment implements Sendable, Serializable {
 	 * Comments votes
 	 */
 	private int votes = 0;
-	
-	public Comment() {}
+
+	public Comment() {
+	}
 
 	public Comment(String text) {
 		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());
 		this.text = text;
 	}
-	
+
 	public void setId(int id) {
-		this.id=id;
+		this.id = id;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -51,7 +52,7 @@ public class Comment implements Sendable, Serializable {
 		StringJoiner sj = new StringJoiner(",", "{", "}");
 		sj.add("\"commentid\":\"" + id + "\"");
 		sj.add("\"timestamp\":\"" + timestamp + "\"");
-		sj.add("\"text\":\"" + text + "\"");
+		sj.add("\"text\":\"" +text+ "\"");
 		sj.add("\"votes\":\"" + votes + "\"");
 		return sj.toString();
 	}

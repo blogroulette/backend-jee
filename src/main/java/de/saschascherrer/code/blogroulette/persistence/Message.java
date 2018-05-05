@@ -44,7 +44,7 @@ public class Message implements Sendable {
 	/**
 	 * Messages text
 	 */
-	@Column(nullable = false)
+	@Column(columnDefinition = "TEXT")
 	private String text;
 
 	/**

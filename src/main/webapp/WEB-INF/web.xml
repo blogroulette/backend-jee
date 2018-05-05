@@ -34,6 +34,14 @@
 		<servlet-class>de.saschascherrer.code.blogroulette.servlets.LoginServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>LoadSettingsServlet</servlet-name>
+		<servlet-class>de.saschascherrer.code.blogroulette.servlets.LoadSettingsServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SaveSettingsServlet</servlet-name>
+		<servlet-class>de.saschascherrer.code.blogroulette.servlets.SaveSettingsServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>LogoutServlet</servlet-name>
 		<servlet-class>de.saschascherrer.code.blogroulette.servlets.LogoutServlet</servlet-class>
 	</servlet>
@@ -71,6 +79,14 @@
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
 		<url-pattern>/Login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LoadSettingsServlet</servlet-name>
+		<url-pattern>/LoadSettings</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SaveSettingsServlet</servlet-name>
+		<url-pattern>/SaveSettings</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>

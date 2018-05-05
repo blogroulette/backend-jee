@@ -15,6 +15,7 @@ import de.saschascherrer.code.blogroulette.inputs.Input;
 import de.saschascherrer.code.blogroulette.inputs.JsonMessage;
 import de.saschascherrer.code.blogroulette.persistence.Message;
 import de.saschascherrer.code.blogroulette.util.EMM;
+import de.saschascherrer.code.blogroulette.util.Security;
 import de.saschascherrer.code.blogroulette.util.Status;
 
 /**
@@ -32,6 +33,10 @@ public class AddMessageServlet extends HttpServlet {
 	@Transactional
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		if(Security.validToken(request)==null) {
+			response.sendError(403, "Verboten!");
+			return;
+		}
 		EntityManager em = EMM.getEm();
 		try {
 			JsonMessage json = (JsonMessage) Input.umarshal(request, JsonMessage.class);
@@ -43,6 +48,7 @@ public class AddMessageServlet extends HttpServlet {
 				em.getTransaction().begin();
 				em.persist(m);
 				em.getTransaction().commit();
+				em.close();
 
 				new Status("ok").writeToOut(response);
 			} else {
@@ -51,13 +57,7 @@ public class AddMessageServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			try {
-				em.getTransaction().rollback();
 				new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				new Status("error", "Die Datenbank macht massive Probleme").writeToOut(response);
-			}
 		}
 	}
 

@@ -1,5 +1,7 @@
 package de.saschascherrer.code.blogroulette.inputs;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 public class JsonVoteComment {
 	private String messageid;
 	private String commentid;
@@ -19,7 +21,7 @@ public class JsonVoteComment {
 
 	public int getCommentid() {
 		try {
-			return Integer.parseInt(commentid);
+			return Integer.parseInt(StringEscapeUtils.escapeJava(commentid));
 		} catch (Exception e) {
 			return -1;
 		}

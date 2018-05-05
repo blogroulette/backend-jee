@@ -33,7 +33,8 @@ public class RegisterServlet extends HttpServlet {
 			em.getTransaction().begin();
 			em.persist(u);
 			em.getTransaction().commit();
-			new Status("ok").writeToOut(response);
+			em.close();
+			u.writeToOut(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			new Status("error", "Das Erstellen des Nutzers ist fehlgeschlagen").writeToOut(response);
