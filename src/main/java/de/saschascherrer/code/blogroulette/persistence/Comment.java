@@ -65,11 +65,12 @@ public class Comment implements Sendable, Serializable {
 		return text;
 	}
 
+	/**
+	 * 
+	 * @param i wenn positiv = Vote up, wenn negativ = Vote down
+	 */
 	public void addVote(int i) {
 		votes += i;
 	}
 
-	public void voteDown() {
-		votes--;
-	}
 }

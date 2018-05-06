@@ -115,6 +115,10 @@ public class Message implements Sendable {
 		return votes;
 	}
 
+	/**
+	 * 
+	 * @param i wenn positiv = Vote up, wenn negativ = Vote down
+	 */
 	public void addVote(int i) {
 		votes += i;
 	}
