@@ -9,25 +9,28 @@
 
 <ui:composition template="/templates/basic.xhtml">
 
-    <ui:define name="title">#{msg['login.title']}</ui:define>
+    <ui:define name="title">#{msgs['page.login.title']}</ui:define>
 
-    <ui:define name="header">#{msg['login.header']}</ui:define>
+    <ui:define name="header">#{msgs['page.login.header']}</ui:define>
 
     <ui:define name="content">
 
         <form name="loginForm" method="POST" action="j_security_check">
-            <p>#{msg['login.info']}</p>
+            <p>#{msgs['page.login.info']}</p>
             <p>
-                <strong>Enter your user name: </strong>
-                <input type="text" name="j_username" size="15"/>
+                <strong>#{msgs['page.login.username']}: </strong><br/>
+                <input type="text" name="j_username" size="15"
+                       placeholder="#{msgs['page.login.username']}"
+                       autofocus="autofocus"/>
             </p>
             <p>
-                <strong>Enter your password: </strong>
-                <input type="password" size="15" name="j_password"/>
+                <strong>#{msgs['page.login.password']}: </strong><br/>
+                <input type="password" size="15" name="j_password"
+                       placeholder="#{msgs['page.login.password']}"/>
             </p>
             <p>
-                <input type="submit" value="Submit"/>
-                <input type="reset" value="Reset"/>
+                <input type="submit" value="#{msgs['button.submit']}"/>
+                <input type="reset" value="#{msgs['button.reset']}"/>
             </p>
         </form>
     </ui:define>
