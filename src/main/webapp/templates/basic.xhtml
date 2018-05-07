@@ -11,23 +11,18 @@
     <title><ui:insert name="title">#{msgs['default.title']}</ui:insert></title>
 </h:head>
 
-<h:body>
+<h:body style="padding: 20px;padding-bottom:60px;padding-top:60px;">
 
-    <div id="menu"><ui:include src="/templates/navigation.xhtml"/></div>
-
+    <div id="menu"><ui:include src="/templates/navigation.xhtml" /></div>
     <b:container fluid="true">
         <p:growl autoUpdate="true"/>
-
-        <p:spacer height="0.5em;"/>
         <h1><ui:insert name="header">#{msgs['default.header']}</ui:insert></h1>
         <div id="content"><ui:insert name="content">#{msg['default.content']}</ui:insert></div>
-
-        <div id="footer"><ui:insert name="footer">#{msgs['default.footer']}</ui:insert></div>
 
         <b:navBar fixed="bottom" sticky="true">
             <b:navbarLinks>
                 <b:navLink value="#{msgs['nav.bottom.copyright']}"
-                           href="http://www.mosbach.dhbw.de/no_cache/unsere-hochschule/kontakt/detailansicht/person/alexanderauch/"
+                           href="https://github.com/blogroulette"
                            target="_blank"/>
             </b:navbarLinks>
         </b:navBar>

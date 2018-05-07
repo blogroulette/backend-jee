@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/basic.xhtml">
+
+    <ui:define name="title">#{msg['login.title']}</ui:define>
+
+    <ui:define name="header">#{msg['login.header']}</ui:define>
+
+    <ui:define name="content">
+
+        <form name="loginForm" method="POST" action="j_security_check">
+            <p>#{msg['login.info']}</p>
+            <p>
+                <strong>Enter your user name: </strong>
+                <input type="text" name="j_username" size="15"/>
+            </p>
+            <p>
+                <strong>Enter your password: </strong>
+                <input type="password" size="15" name="j_password"/>
+            </p>
+            <p>
+                <input type="submit" value="Submit"/>
+                <input type="reset" value="Reset"/>
+            </p>
+        </form>
+    </ui:define>
+
+</ui:composition>
+
+</html>
