@@ -111,6 +111,13 @@ public class User implements Sendable {
         String[] tokens = token.split(";");
         return tokens[tokens.length - 1];
     }
+    
+    public boolean tokensAvailable() {
+        if (token.length()<5) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String getJson() {
