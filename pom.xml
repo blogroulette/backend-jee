@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.saschascherrer.code</groupId>
-	<artifactId>blogroulette</artifactId>
+	<artifactId>blogroulette-jee</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Blogroulette</name>
@@ -71,7 +71,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>blogroulette</finalName>
+		<finalName>blogroulette-jee</finalName>
 		<plugins>
 			<plugin> <!-- maven-compiler-plugin -->
 				<groupId>org.apache.maven.plugins</groupId>
