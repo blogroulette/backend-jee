@@ -1,4 +1,3 @@
 FROM jboss/wildfly
 
-ADD target/blogroulette.war /opt/jboss/wildfly/standalone/deployments/
-
+ADD target/blogroulette-jee.war /opt/jboss/wildfly/standalone/deployments/
