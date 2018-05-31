@@ -18,36 +18,38 @@ import de.saschascherrer.code.blogroulette.util.Status;
  * Servlet implementation class LoginServlet
  */
 public class LogoutServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(Security.validToken(request)==null) {
-			response.sendError(403, "Verboten!");
-			return;
-		}
-		try {
-			User u = Security.validToken(request);
-			if (u == null) {
-				new Status("error", "Nicht eingeloggt").writeToOut(response);
-				return;
-			}
-			u.logout(request.getHeader(HttpHeaders.AUTHORIZATION));
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (Security.validToken(request) == null) {
+            response.sendError(403, "Verboten!");
+            return;
+        }
+        boolean plan = true;
+        try {
+            User u = Security.validToken(request);
+            if (u == null) {
+                plan = false;
+                new Status("error", "Nicht eingeloggt").writeToOut(response);
+                return;
+            }
+            u.logout(request.getHeader(HttpHeaders.AUTHORIZATION));
 
-			EntityManager em = EMM.getEm();
-			em.getTransaction().begin();
-			em.merge(u);
-			em.getTransaction().commit();
-			em.close();
-			new Status("ok").writeToOut(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			new Status("error", "Das Ausloggen ist fehlgeschlagen").writeToOut(response);
-		}
-	}
+            EntityManager em = EMM.getEm();
+            em.getTransaction().begin();
+            em.merge(u);
+            em.getTransaction().commit();
+            em.close();
+            new Status("ok").writeToOut(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (plan)
+                new Status("error", "Das Ausloggen ist fehlgeschlagen").writeToOut(response);
+        }
+    }
 
 }

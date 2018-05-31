@@ -27,7 +27,9 @@ public class SaveSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User u = Security.validToken(request);
+        boolean plan = true;
         if (u == null) {
+            plan = false;
             response.sendError(403, "Verboten!");
             return;
         }
@@ -35,6 +37,7 @@ public class SaveSettingsServlet extends HttpServlet {
             JsonSaveSettings json = (JsonSaveSettings) Input.umarshal(request,
                     JsonSaveSettings.class);
             if (!u.getUsername().equals(json.getUser()) || !u.login(json.getPassword())) {
+                plan=false;
                 new Status("error", "Die Anmeldeinformationen stimmen nicht überein")
                         .writeToOut(response);
                 return;
@@ -48,7 +51,8 @@ public class SaveSettingsServlet extends HttpServlet {
             u.writeToOut(response);
         } catch (Exception e) {
             e.printStackTrace();
-            new Status("error", "Das Speichern ist fehlgeschlagen").writeToOut(response);
+            if (plan)
+                new Status("error", "Das Speichern ist fehlgeschlagen").writeToOut(response);
         }
     }
 

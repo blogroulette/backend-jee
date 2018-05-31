@@ -20,48 +20,53 @@ import de.saschascherrer.code.blogroulette.util.Status;
  * Servlet implementation class LoginServlet
  */
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private User user(String name) {
-		Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
-		query.setParameter("name", name);
-		List<?> list = query.getResultList();
-		if (list.size() < 1)
-			return null;
-		return (User) list.get(0);
-	}
+    private User user(String name) {
+        Query query = EMM.getEm().createQuery("select u from User u where u.username like :name");
+        query.setParameter("name", name);
+        List<?> list = query.getResultList();
+        if (list.size() < 1)
+            return null;
+        return (User) list.get(0);
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-			JsonRegister json = (JsonRegister) Input.umarshal(request, JsonRegister.class);
-			if (json.getUser() == null) {
-				new Status("error", "Kein User angegeben").writeToOut(response);
-				return;
-			}
-			User u = user(json.getUser());
-			if (u == null) {
-				new Status("error", "Der User existiert nicht").writeToOut(response);
-				return;
-			}
-			if (!u.login(json.getUnsaltedPassword())) {
-				new Status("error", "Anmeldeinformationen stimmen nicht").writeToOut(response);
-				return;
-			}
-			EntityManager em = EMM.getEm();
-			em.getTransaction().begin();
-			em.merge(u);
-			em.getTransaction().commit();
-			em.close();
-			u.writeToOut(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			new Status("error", "Das Einloggen ist fehlgeschlagen").writeToOut(response);
-		}
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        boolean plan = true;
+        try {
+            JsonRegister json = (JsonRegister) Input.umarshal(request, JsonRegister.class);
+            if (json.getUser() == null) {
+                plan=false;
+                new Status("error", "Kein User angegeben").writeToOut(response);
+                return;
+            }
+            User u = user(json.getUser());
+            if (u == null) {
+                plan=false;
+                new Status("error", "Der User existiert nicht").writeToOut(response);
+                return;
+            }
+            if (!u.login(json.getUnsaltedPassword())) {
+                plan=false;
+                new Status("error", "Anmeldeinformationen stimmen nicht").writeToOut(response);
+                
+                return;
+            }
+            EntityManager em = EMM.getEm();
+            em.getTransaction().begin();
+            em.merge(u);
+            em.getTransaction().commit();
+            em.close();
+            u.writeToOut(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (plan)
+                new Status("error", "Das Einloggen ist fehlgeschlagen").writeToOut(response);
+        }
+    }
 
 }

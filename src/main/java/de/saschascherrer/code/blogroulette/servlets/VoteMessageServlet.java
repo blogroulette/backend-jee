@@ -19,32 +19,35 @@ import de.saschascherrer.code.blogroulette.util.Status;
  * Servlet implementation class VoteMessageServlet
  */
 public class VoteMessageServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if (Security.validToken(request) == null) {
-			response.sendError(403, "Verboten!");
-			return;
-		}
-		try {
-			JsonVoteMessage json = (JsonVoteMessage) Input.umarshal(request, JsonVoteMessage.class);
-			Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
-			m.addVote(json.upOrDown());
-			EntityManager em = EMM.getEm();
-			em.getTransaction().begin();
-			em.merge(m);
-			em.getTransaction().commit();
-			em.close();
-			new Status("ok").writeToOut(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			new Status("error", "Das Speichern der Nachricht ist fehlgeschlagen").writeToOut(response);
-		}
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        boolean plan = true;
+        if (Security.validToken(request) == null) {
+            plan = false;
+            response.sendError(403, "Verboten!");
+            return;
+        }
+        try {
+            JsonVoteMessage json = (JsonVoteMessage) Input.umarshal(request, JsonVoteMessage.class);
+            Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
+            m.addVote(json.upOrDown());
+            EntityManager em = EMM.getEm();
+            em.getTransaction().begin();
+            em.merge(m);
+            em.getTransaction().commit();
+            em.close();
+            new Status("ok").writeToOut(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (plan)
+                new Status("error", "Das Speichern der Nachricht ist fehlgeschlagen")
+                        .writeToOut(response);
+        }
+    }
 
 }

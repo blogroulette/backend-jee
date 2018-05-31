@@ -23,16 +23,19 @@ public class LoadSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User u = Security.validToken(request);
+        boolean plan = true;
         if (u == null) {
+            plan=false;
             response.sendError(403, "Verboten!");
+           
             return;
         }
         try {
             u.writeToOut(response);
         } catch (Exception e) {
             e.printStackTrace();
-            new Status("error", "Das Laden ist fehlgeschlagen")
-                    .writeToOut(response);
+            if (plan)
+                new Status("error", "Das Laden ist fehlgeschlagen").writeToOut(response);
         }
     }
 

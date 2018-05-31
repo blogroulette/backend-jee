@@ -24,41 +24,45 @@ import de.saschascherrer.code.blogroulette.util.Status;
 @Named
 @RequestScoped
 public class AddMessageServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Transactional
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(Security.validToken(request)==null) {
-			response.sendError(403, "Verboten!");
-			return;
-		}
-		EntityManager em = EMM.getEm();
-		try {
-			JsonMessage json = (JsonMessage) Input.umarshal(request, JsonMessage.class);
-			String title = json.getTitle();
-			String text = json.getText();
-			if (!title.isEmpty() && !text.isEmpty()) {
-				Message m = new Message(title, text);
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    @Transactional
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        boolean plan = true;
+        if (Security.validToken(request) == null) {
+            response.sendError(403, "Verboten!");
+            plan = false;
+            return;
+        }
+        EntityManager em = EMM.getEm();
+        try {
+            JsonMessage json = (JsonMessage) Input.umarshal(request, JsonMessage.class);
+            String title = json.getTitle();
+            String text = json.getText();
+            if (!title.isEmpty() && !text.isEmpty()) {
+                Message m = new Message(title, text);
 
-				em.getTransaction().begin();
-				em.persist(m);
-				em.getTransaction().commit();
-				em.close();
+                em.getTransaction().begin();
+                em.persist(m);
+                em.getTransaction().commit();
+                em.close();
 
-				new Status("ok").writeToOut(response);
-			} else {
-				new Status("error", "Konnte Text und Titel nicht finden").writeToOut(response);
-			}
+                new Status("ok").writeToOut(response);
+            } else {
+                new Status("error", "Konnte Text und Titel nicht finden").writeToOut(response);
+                plan = false;
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-				new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen").writeToOut(response);
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (plan)
+                new Status("error", "Das Speichern der Mitteilung ist fehlgeschlagen")
+                        .writeToOut(response);
+        }
+    }
 
 }

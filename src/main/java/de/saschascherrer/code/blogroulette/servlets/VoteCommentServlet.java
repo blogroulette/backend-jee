@@ -20,37 +20,41 @@ import de.saschascherrer.code.blogroulette.util.Status;
  * Servlet implementation class VoteCommentServlet
  */
 public class VoteCommentServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if(Security.validToken(request)==null) {
-			response.sendError(403, "Verboten!");
-			return;
-		}
-		try {
-			JsonVoteComment json = (JsonVoteComment) Input.umarshal(request, JsonVoteComment.class);
-			Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
-			Comment c = m.getComment(json.getCommentid());
-			if (c == null) {
-				new Status("error", "Ungültige ID").writeToOut(response);
-				return;
-			}
-			c.addVote(json.upOrDown());
-			EntityManager em = EMM.getEm();
-			em.getTransaction().begin();
-			em.merge(m);
-			em.getTransaction().commit();
-			em.close();
-			new Status("ok").writeToOut(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-			new Status("error", "Das Speichern des Kommentars ist fehlgeschlagen").writeToOut(response);
-		}
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        boolean plan = true;
+        if (Security.validToken(request) == null) {
+            plan = false;
+            response.sendError(403, "Verboten!");
+            return;
+        }
+        try {
+            JsonVoteComment json = (JsonVoteComment) Input.umarshal(request, JsonVoteComment.class);
+            Message m = EMM.getEm().find(Message.class, Long.parseLong(json.getMessageid()));
+            Comment c = m.getComment(json.getCommentid());
+            if (c == null) {
+                plan = false;
+                new Status("error", "Ungültige ID").writeToOut(response);
+                return;
+            }
+            c.addVote(json.upOrDown());
+            EntityManager em = EMM.getEm();
+            em.getTransaction().begin();
+            em.merge(m);
+            em.getTransaction().commit();
+            em.close();
+            new Status("ok").writeToOut(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (plan)
+                new Status("error", "Das Speichern des Kommentars ist fehlgeschlagen")
+                        .writeToOut(response);
+        }
+    }
 
 }
