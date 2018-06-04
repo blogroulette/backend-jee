@@ -63,7 +63,7 @@ public class Message implements Sendable {
 	}
 
 	public Message(String title, String text) {
-		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'h:m:ssZZZZZ").format(new Date());
+		timestamp = new SimpleDateFormat("yyyy-MM-dd'T'H:m:ssZZZZZ").format(new Date());
 		this.title = title;
 		this.text = text;
 	}
